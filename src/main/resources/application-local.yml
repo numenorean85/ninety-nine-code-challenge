@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:33060/codechallenge?characterEncoding=utf8
+    username: root
+    password: toor
+server:
+  port: 8080

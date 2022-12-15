@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:oracle
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: codechallenge
+      MYSQL_ROOT_PASSWORD: toor
+    ports:
+      - '33060:3306'
+    volumes:
+      - dbdata:/var/lib/mysql
+volumes:
+  dbdata:

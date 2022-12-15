@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -81,6 +81,23 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Swagger for rest documentation -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-kotlin</artifactId>
+			<version>1.6.13</version>
+		</dependency>
+		<!-- Mapper library to automate model transformations -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.1.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -90,6 +107,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${project.parent.version}</version>
+				<configuration>
+					<mainClass>com.ninetynine.codechallenge.NinetyNineApplicationKt</mainClass>
+					<excludes>
+						<exclude>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-configuration-processor</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
@@ -118,5 +145,69 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<activatedProperties>local</activatedProperties>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<!-- flyWay database migration -->
+					<plugin>
+						<groupId>org.flywaydb</groupId>
+						<artifactId>flyway-maven-plugin</artifactId>
+						<configuration>
+							<url>jdbc:mysql://localhost:33060/codechallenge</url>
+							<user>root</user>
+							<password>toor</password>
+							<locations>
+								<location>classpath:db/migration</location>
+								<location>classpath:db/mysql/migration</location>
+								<location>classpath:db/dev/migration</location>
+							</locations>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>mysql</groupId>
+								<artifactId>mysql-connector-java</artifactId>
+								<version>8.0.22</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>test</id>
+			<build>
+				<plugins>
+					<!-- flyWay database migration -->
+					<plugin>
+						<groupId>org.flywaydb</groupId>
+						<artifactId>flyway-maven-plugin</artifactId>
+						<configuration>
+							<url>jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE</url>
+							<user>sa</user>
+							<password>sa</password>
+							<locations>
+								<location>classpath:db/migration</location>
+								<location>classpath:db/h2/migration</location>
+								<location>classpath:db/tests/migration</location>
+							</locations>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>com.h2database</groupId>
+								<artifactId>h2</artifactId>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
