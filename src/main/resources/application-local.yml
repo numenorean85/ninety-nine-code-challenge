@@ -5,3 +5,15 @@ spring:
     password: toor
 server:
   port: 8080
+
+ninety-nine:
+  max-time-periods: 12
+  default-currency: EUR
+  provider-rate: PT5S
+  provider:
+    nasdaq:
+      url: "http://localhost:8080/mock/nasdaq"
+      method: GET
+    nyse:
+      url: "http://localhost:8080/mock/nyse"
+      method: GET

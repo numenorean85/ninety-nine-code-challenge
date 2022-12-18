@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   db:
-    image: mysql:oracle
+    image: amd64/mysql:oracle
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:

@@ -14,7 +14,7 @@ spring:
     show-sql: false
 # SWAGGER
 # To access Swagger UI, the default url is /swagger-ui.html
-# In local environment, it's http://localhost:8090/swagger-ui.html
+# In local environment, it's http://localhost:8080/swagger-ui.html
 springdoc:
   api-docs:
     enabled: true
